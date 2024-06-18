@@ -12,9 +12,10 @@ void handleAuthError(BuildContext context) {
       actions: [
         TextButton(
           onPressed: () {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => LoginPage()),
-            );
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => LoginPage()),
+                ModalRoute.withName("/Home"));
           },
           child: Text('Login'),
         ),

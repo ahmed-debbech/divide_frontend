@@ -23,4 +23,9 @@ class SharedPrefDb {
       String token = prefs.getString('access_token') ?? '';
       return token;
   }  
+
+  void resetToken() async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('access_token', '');
+  }
 }

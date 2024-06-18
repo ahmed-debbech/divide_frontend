@@ -1,5 +1,7 @@
 import 'package:divide_frontend/models/MyProfileData.dart';
 import 'package:divide_frontend/services/UsersService.dart';
+import 'package:divide_frontend/shared_pref/SharedPrefDb.dart';
+import 'package:divide_frontend/ui/Login.dart';
 import 'package:divide_frontend/ui/common/QrCodeWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,7 @@ class MyProfilePage extends StatefulWidget {
 class _MyProfileState extends State<MyProfilePage> {
   late UsersService us;
 
+  SharedPrefDb shared = SharedPrefDb();
   MyProfileData mpd = MyProfileData(fullName: "", email: "", uid: "");
 
   @override
@@ -54,7 +57,25 @@ class _MyProfileState extends State<MyProfilePage> {
           ),
         ),
         if (mpd.uid != "") QRCodeWidget(data: "${mpd.uid}"),
-        if (mpd.uid != "") Text("Share it with your friends!")
+        if (mpd.uid != "") Text("Share it with your friends!"),
+        const SizedBox(height: 10),
+        ElevatedButton(
+            onPressed: () {
+              Navigator.pushAndRemoveUntil(
+                context, 
+                MaterialPageRoute(
+                  builder: (context) => LoginPage()
+                ), 
+              ModalRoute.withName("/Home")
+              );
+              shared.resetToken();
+            },
+            child: const Text("Log Out"),
+            style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                        side: BorderSide(color: Colors.blue)))))
       ],
     ));
   }
