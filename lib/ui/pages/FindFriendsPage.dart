@@ -20,14 +20,20 @@ class _FindFriendsPageState extends State<FindFriendsPage> {
   String? scannedQrData;
   UserWithFriendship? userFriends;
 
-  UsersService us = UsersService();
+  late UsersService us;
   bool successful = false;
-  FriendshipService fs = FriendshipService();
+  late FriendshipService fs;
 
   @override
   void dispose() {
     //controller!.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    us = UsersService(context: context);
+    fs = FriendshipService(context: context);
   }
 
   @override
@@ -237,34 +243,36 @@ class _FindFriendsPageState extends State<FindFriendsPage> {
     }
     if (userFriends!.friendshipStatus == "ACCEPTABLE") {
       return Row(children: [
-        ElevatedButton(
-            onPressed: () {
-              fs.accept(userFriends!.friendshipId).then((value) => {
-                    setState(() {
-                      this.successful = false;
-                    })
-                  });
-            },
-            child: const Text("Accept"),
-            style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                        side: BorderSide(color: Colors.blue))))),
-        ElevatedButton(
-            onPressed: () {
-              fs.cancel(userFriends!.friendshipId).then((value) => {
-                    setState(() {
-                      this.successful = false;
-                    })
-                  });
-            },
-            child: const Text("Refuse"),
-            style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                        side: BorderSide(color: Colors.red)))))
+        Expanded(
+            child: ElevatedButton(
+                onPressed: () {
+                  fs.accept(userFriends!.friendshipId).then((value) => {
+                        setState(() {
+                          this.successful = false;
+                        })
+                      });
+                },
+                child: const Text("Accept"),
+                style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                            side: BorderSide(color: Colors.blue)))))),
+        Expanded(
+            child: ElevatedButton(
+                onPressed: () {
+                  fs.cancel(userFriends!.friendshipId).then((value) => {
+                        setState(() {
+                          this.successful = false;
+                        })
+                      });
+                },
+                child: const Text("Refuse"),
+                style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                            side: BorderSide(color: Colors.red))))))
       ]);
     }
     if (userFriends!.friendshipStatus == "CANCELABLE") {

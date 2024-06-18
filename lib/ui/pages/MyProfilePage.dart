@@ -10,16 +10,14 @@ class MyProfilePage extends StatefulWidget {
 }
 
 class _MyProfileState extends State<MyProfilePage> {
+  late UsersService us;
 
-  UsersService us = UsersService();
   MyProfileData mpd = MyProfileData(fullName: "", email: "", uid: "");
 
   @override
-  void initState(){
-    us.getProfileData().then((value) => {
-      setState(() => mpd = value
-      )
-    });
+  void initState() {
+    us = UsersService(context: context);
+    us.getProfileData().then((value) => {setState(() => mpd = value)});
   }
 
   @override
@@ -33,7 +31,9 @@ class _MyProfileState extends State<MyProfilePage> {
         Container(
             width: 150,
             height: 300,
-            child: Center(child: Text((mpd.fullName != '')?mpd.fullName[0] : '', style: TextStyle(fontSize: 50))),
+            child: Center(
+                child: Text((mpd.fullName != '') ? mpd.fullName[0] : '',
+                    style: TextStyle(fontSize: 50))),
             decoration: const ShapeDecoration(
                 color: Colors.white,
                 shape: CircleBorder(
@@ -53,11 +53,8 @@ class _MyProfileState extends State<MyProfilePage> {
             fontWeight: FontWeight.w300,
           ),
         ),
-        if(mpd.uid != "")
-        QRCodeWidget(data: "${mpd.uid}"),
-        if(mpd.uid != "")
-        Text("Share it with your friends!")
-       
+        if (mpd.uid != "") QRCodeWidget(data: "${mpd.uid}"),
+        if (mpd.uid != "") Text("Share it with your friends!")
       ],
     ));
   }

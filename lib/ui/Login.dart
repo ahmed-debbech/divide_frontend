@@ -13,8 +13,13 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
 
-  AuthService authService = AuthService();
+  late AuthService authService;
   SharedPrefDb spd = SharedPrefDb();
+
+  @override
+  void initState() {
+    authService = AuthService(context: context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
                       .then((value) => {
                             if (value.ok == true)
                               {
-                                spd.saveEmail(_emailController.text), 
+                                spd.saveEmail(_emailController.text),
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(

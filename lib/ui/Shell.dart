@@ -14,6 +14,14 @@ class _ShellState extends State<Shell> {
   int selected_index = 0;
 
   @override
+  void initState() {
+    setState(() {
+      current_selection = "My Receipts";
+      selected_index = 0;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
@@ -38,10 +46,10 @@ class _ShellState extends State<Shell> {
                 child: (this.selected_index == 0)
                     ? MyReceiptsPage()
                     : (this.selected_index == 2)
-                    ? MyProfilePage()
-                    : (this.selected_index == 1)
-                    ? FindFriendsPage()
-                    : Container()),
+                        ? MyProfilePage()
+                        : (this.selected_index == 1)
+                            ? FindFriendsPage()
+                            : Container()),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [

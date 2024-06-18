@@ -5,11 +5,18 @@ import 'package:divide_frontend/models/MyProfileData.dart';
 import 'package:divide_frontend/models/ResponseHolder.dart';
 import 'package:divide_frontend/models/UserWithFriendship.dart';
 import 'package:divide_frontend/shared_pref/SharedPrefDb.dart';
+import 'package:divide_frontend/ui/Login.dart';
+import 'package:divide_frontend/services/common/HandleAuthError.dart';
+import 'package:flutter/material.dart';
 import '../globals.dart' as globals;
 import 'package:http/http.dart' as http;
 
 class UsersService {
   SharedPrefDb shared = SharedPrefDb();
+
+  late BuildContext context;
+
+  UsersService({required this.context});
 
   Future<MyProfileData> getProfileData() async {
     try {
@@ -22,6 +29,11 @@ class UsersService {
           });
       var data = jsonDecode(response.body);
       print(data);
+
+      if (response.statusCode == 403 || response.statusCode == 401) {
+        handleAuthError(context);
+      }
+
       if (response.statusCode == 200) {
         MyProfileData m = MyProfileData.fromJson(data);
         return m;
@@ -45,6 +57,9 @@ class UsersService {
             'Accept': 'application/json',
             'Authorization': 'Bearer ${await shared.getAccessToken()}',
           });
+      if (response.statusCode == 403 || response.statusCode == 401) {
+        handleAuthError(context);
+      }
       var data = jsonDecode(response.body);
 
       if (response.statusCode == 200) {

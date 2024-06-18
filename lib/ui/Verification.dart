@@ -16,12 +16,13 @@ class _VerificationPageState extends State<VerificationPage> {
   final List<TextEditingController> _controllers =
       List.generate(4, (index) => TextEditingController());
 
-  AuthService authService = AuthService();
+  late AuthService authService;
   SharedPrefDb sharedPrefDb = SharedPrefDb();
 
   @override
   void initState() {
     super.initState();
+    authService = AuthService(context: context);
     for (int i = 0; i < 4; i++) {
       _controllers[i].addListener(() {
         if (_controllers[i].text.length == 1 && i < 3) {
@@ -126,7 +127,8 @@ class _VerificationPageState extends State<VerificationPage> {
                       .then((value) async => {
                             if (value.ok)
                               {
-                                await sharedPrefDb.storeAccessToken(value.data as String),
+                                await sharedPrefDb
+                                    .storeAccessToken(value.data as String),
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(

@@ -7,20 +7,21 @@ class MyReceiptsPage extends StatefulWidget {
 }
 
 class _ReceiptsPageState extends State<MyReceiptsPage> {
-  final List<Widget> _receipts = List.generate(100, (index) => Text("hey"));
+  final List<Widget> _receipts =
+      []; //List.generate(100, (index) => Text("hey"));
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-                itemCount: _receipts.length,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      _receipts[index],
-                      SizedBox(height: 20),
-                    ],
-                  );
-                },
-              );
+      itemCount: _receipts.length,
+      itemBuilder: (context, index) {
+        return Column(
+          children: [
+            _receipts[index],
+            SizedBox(height: 20),
+          ],
+        );
+      },
+    );
   }
 }
