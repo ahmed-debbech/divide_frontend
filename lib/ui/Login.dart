@@ -1,5 +1,6 @@
 import 'package:divide_frontend/services/AuthService.dart';
 import 'package:divide_frontend/shared_pref/SharedPrefDb.dart';
+import 'package:divide_frontend/ui/CreateAccountPage.dart';
 import 'package:divide_frontend/ui/FadeIn.dart';
 import 'package:divide_frontend/ui/Verification.dart';
 import 'package:divide_frontend/ui/common/dialog.dart';
@@ -66,7 +67,9 @@ class _LoginPageState extends State<LoginPage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => VerificationPage()),
+                                      builder: (context) => VerificationPage(
+                                            mode: "login",
+                                          )),
                                 )
                               }
                             else
@@ -104,7 +107,11 @@ class _LoginPageState extends State<LoginPage> {
               width: 250,
               child: ElevatedButton(
                 onPressed: () {
-                  // Add your Create Account button logic here
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => CreateAccountPage()),
+                  );
                 },
                 style: ButtonStyle(
                   backgroundColor:

@@ -1,6 +1,8 @@
 import 'package:divide_frontend/ui/pages/FindFriendsPage.dart';
+import 'package:divide_frontend/ui/pages/MyFriendsPage.dart';
 import 'package:divide_frontend/ui/pages/MyProfilePage.dart';
 import 'package:divide_frontend/ui/pages/MyReceiptsPage.dart';
+import 'package:divide_frontend/ui/pages/MyFriendsPage.dart';
 import 'package:divide_frontend/ui/common/ButtomNavigationButton.dart';
 import 'package:flutter/material.dart';
 
@@ -49,7 +51,9 @@ class _ShellState extends State<Shell> {
                         ? MyProfilePage()
                         : (this.selected_index == 1)
                             ? FindFriendsPage()
-                            : Container()),
+                            : (this.selected_index == -2)
+                                ? MyFriendsPage()
+                                : Container()),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [

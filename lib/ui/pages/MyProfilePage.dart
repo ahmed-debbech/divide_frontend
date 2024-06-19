@@ -61,14 +61,12 @@ class _MyProfileState extends State<MyProfilePage> {
         const SizedBox(height: 10),
         ElevatedButton(
             onPressed: () {
+              shared.reset();
+
               Navigator.pushAndRemoveUntil(
-                context, 
-                MaterialPageRoute(
-                  builder: (context) => LoginPage()
-                ), 
-              ModalRoute.withName("/Home")
-              );
-              shared.resetToken();
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                  ModalRoute.withName("/Home"));
             },
             child: const Text("Log Out"),
             style: ButtonStyle(

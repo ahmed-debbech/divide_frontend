@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:divide_frontend/models/FriendshipRegistry.dart';
 import 'package:divide_frontend/models/GeneralResponse.dart';
 import 'package:divide_frontend/services/common/HandleAuthError.dart';
 import 'package:divide_frontend/shared_pref/SharedPrefDb.dart';
@@ -33,6 +34,35 @@ class FriendshipService {
       GeneralResponse gr =
           GeneralResponse(error: "error from client end", ok: false);
       return gr;
+    }
+  }
+
+  Future<List<FriendshipRegistry>> getFriends() async {
+    try {
+      final response = await http.get(
+          Uri.parse(globals.top_level_api + 'friendship/friends'),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ${await shared.getAccessToken()}',
+          });
+      var data = jsonDecode(response.body);
+      if (response.statusCode == 403 || response.statusCode == 401) {
+        handleAuthError(context);
+      }
+      print(data);
+      List<FriendshipRegistry> ll = [];
+      if (response.statusCode == 200) {
+        for (int i = 0; i <= (data as List).length - 1; i++) {
+          FriendshipRegistry gr =
+              FriendshipRegistry.fromJson((data as List)[i]);
+          ll.add(gr);
+        }
+      }
+      return ll;
+    } catch (e) {
+      print(e);
+      return [];
     }
   }
 

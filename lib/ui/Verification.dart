@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class VerificationPage extends StatefulWidget {
+  final String mode;
+  VerificationPage({required this.mode});
   @override
   _VerificationPageState createState() => _VerificationPageState();
 }
@@ -121,34 +123,65 @@ class _VerificationPageState extends State<VerificationPage> {
                 onPressed: () async {
                   String otp = _readFully();
                   print(otp);
-                  authService
-                      .performLoginValidation(
-                          await sharedPrefDb.getEmail(), otp)
-                      .then((value) async => {
-                            if (value.ok)
-                              {
-                                await sharedPrefDb
-                                    .storeAccessToken(value.data as String),
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => MyReceiptsPage()),
-                                )
-                              }
-                            else
-                              {
-                                showCustomDialog(
-                                  context: context,
-                                  title: 'Error',
-                                  content: '${value.error}',
-                                  buttonText: 'OK',
-                                  onPressed: () {
-                                    Navigator.of(context)
-                                        .pop(); // Close the dialog
-                                  },
-                                )
-                              }
-                          });
+                  if (widget.mode == "login") {
+                    authService
+                        .performLoginValidation(
+                            await sharedPrefDb.getEmail(), otp)
+                        .then((value) async => {
+                              if (value.ok)
+                                {
+                                  await sharedPrefDb
+                                      .storeAccessToken(value.data as String),
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => MyReceiptsPage()),
+                                  )
+                                }
+                              else
+                                {
+                                  showCustomDialog(
+                                    context: context,
+                                    title: 'Error',
+                                    content: '${value.error}',
+                                    buttonText: 'OK',
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pop(); // Close the dialog
+                                    },
+                                  )
+                                }
+                            });
+                  } else {
+                    authService
+                        .performSignupValidation(
+                            await sharedPrefDb.getEmail(), otp)
+                        .then((value) async => {
+                              if (value.ok)
+                                {
+                                  await sharedPrefDb
+                                      .storeAccessToken(value.data as String),
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => MyReceiptsPage()),
+                                  )
+                                }
+                              else
+                                {
+                                  showCustomDialog(
+                                    context: context,
+                                    title: 'Error',
+                                    content: '${value.error}',
+                                    buttonText: 'OK',
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pop(); // Close the dialog
+                                    },
+                                  )
+                                }
+                            });
+                  }
                 },
                 style: ButtonStyle(
                   backgroundColor:
