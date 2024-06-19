@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:divide_frontend/ui/pages/FindFriendsPage.dart';
 import 'package:divide_frontend/ui/pages/MyFriendsPage.dart';
 import 'package:divide_frontend/ui/pages/MyProfilePage.dart';
 import 'package:divide_frontend/ui/pages/MyReceiptsPage.dart';
 import 'package:divide_frontend/ui/pages/MyFriendsPage.dart';
 import 'package:divide_frontend/ui/common/ButtomNavigationButton.dart';
+import 'package:divide_frontend/ui/pages/ScanReceiptPage.dart';
 import 'package:flutter/material.dart';
 
 class Shell extends StatefulWidget {
@@ -15,12 +18,39 @@ class _ShellState extends State<Shell> {
   String current_selection = "My Receipts";
   int selected_index = 0;
 
+  int _clickCounter = 0;
+  Timer? _clickTimer;
+
   @override
   void initState() {
-    setState(() {
-      current_selection = "My Receipts";
-      selected_index = 0;
-    });
+    current_selection = "My Receipts";
+    selected_index = 0;
+  }
+
+  @override
+  void dispose() {
+    _clickTimer?.cancel();
+    super.dispose();
+  }
+
+  void _onDoubleClick() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ScanReceiptPage()),
+    );
+  }
+
+  void _handleClick() {
+    if (_clickCounter == 0) {
+      _clickCounter++;
+      _clickTimer = Timer(Duration(milliseconds: 300), () {
+        _clickCounter = 0;
+      });
+    } else {
+      _clickCounter = 0;
+      _clickTimer?.cancel();
+      _onDoubleClick();
+    }
   }
 
   @override
@@ -82,7 +112,11 @@ class _ShellState extends State<Shell> {
                   height: 50,
                   child: FloatingActionButton(
                     onPressed: () {
-                      // Add your camera functionality here
+                      setState(() {
+                        this.current_selection = "My Receipts";
+                        this.selected_index = 0;
+                      });
+                      _handleClick();
                     },
                     child: Icon(Icons.camera_alt),
                   ),
