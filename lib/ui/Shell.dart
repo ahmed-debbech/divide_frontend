@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:divide_frontend/ui/common/TakePhoto.dart';
 import 'package:divide_frontend/ui/pages/FindFriendsPage.dart';
 import 'package:divide_frontend/ui/pages/MyFriendsPage.dart';
 import 'package:divide_frontend/ui/pages/MyProfilePage.dart';
@@ -34,10 +35,13 @@ class _ShellState extends State<Shell> {
   }
 
   void _onDoubleClick() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => ScanReceiptPage()),
-    );
+    TakePhoto().capture().then((value) => {
+        //contains the base64 image
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ScanReceiptPage(base64Img: value)),
+        )
+    });
   }
 
   void _handleClick() {

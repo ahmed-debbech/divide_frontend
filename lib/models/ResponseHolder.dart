@@ -1,7 +1,7 @@
 class ResponseHolder{
   late String error;
   late bool ok;
-  late Object data;
+  late dynamic data;
 
   ResponseHolder({
     required this.error,

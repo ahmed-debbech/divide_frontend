@@ -32,7 +32,7 @@ class AuthService {
       GeneralResponse gr = GeneralResponse.fromJson(data);
       return gr;
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
       GeneralResponse gr =
           GeneralResponse(error: "error from client end", ok: false);
       return gr;
