@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class ScanReceiptPage extends StatefulWidget {
   final String base64Img;
   String? receiptReturnedId;
-  
+
   ScanReceiptPage({super.key, required this.base64Img, this.receiptReturnedId});
 
   @override
@@ -19,13 +19,14 @@ class _ScanReceiptPageState extends State<ScanReceiptPage> {
   @override
   void initState() {
     receiptService = ReceiptService(context: context);
-    if(widget.base64Img != ""){
+    if (widget.base64Img != "") {
+      print(widget.base64Img);
       receiptService.sendDataToScan(widget.base64Img).then((value) => {
-        if(value.ok)
-        setState(() {
-          widget.receiptReturnedId = value.data["processingAuthCode"];
-        })
-      });
+            if (value.ok)
+              setState(() {
+                widget.receiptReturnedId = value.data["processingAuthCode"];
+              })
+          });
     }
   }
 
@@ -62,13 +63,14 @@ class _ScanReceiptPageState extends State<ScanReceiptPage> {
                             ],
                           ),
                         ),
-                        (widget.receiptReturnedId == null)?
-                        const Text('Rceipt is getting uploaded! please wait',
-                            style:
-                                TextStyle(fontSize: 16, color: Colors.black))
-                        :
-                        Text("Uploaded succesfully! now the receipt is getting analyzed..."+
-                        "(${widget.receiptReturnedId})")
+                        (widget.receiptReturnedId == null)
+                            ? const Text(
+                                'Rceipt is getting uploaded! please wait',
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.black))
+                            : Text(
+                                "Uploaded succesfully! now the receipt is getting analyzed..." +
+                                    "(${widget.receiptReturnedId})")
                       ]),
                     const SizedBox(height: 20),
                   ],

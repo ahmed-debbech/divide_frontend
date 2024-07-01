@@ -36,12 +36,13 @@ class _ShellState extends State<Shell> {
 
   void _onDoubleClick() {
     TakePhoto().capture().then((value) => {
-        //contains the base64 image
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ScanReceiptPage(base64Img: value)),
-        )
-    });
+          //contains the base64 image
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ScanReceiptPage(base64Img: value)),
+          )
+        });
   }
 
   void _handleClick() {
