@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:divide_frontend/models/GeneralResponse.dart';
 import 'package:divide_frontend/models/ResponseHolder.dart';
 import 'package:divide_frontend/models/UserWithFriendship.dart';
 import 'package:divide_frontend/services/common/HandleAuthError.dart';
@@ -42,6 +43,30 @@ class ReceiptService {
       print(e);
       ResponseHolder gr =
           ResponseHolder(error: "error from client end", ok: false, data: "");
+      return gr;
+    }
+  }
+
+  Future<ResponseHolder> checkProgress(String receipt) async {
+    try {
+      final response = await http.get(
+          Uri.parse(
+              globals.top_level_api + 'receipt/check_progress/${receipt}'),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ${await shared.getAccessToken()}',
+          });
+      var data = jsonDecode(response.body);
+      if (response.statusCode == 403 || response.statusCode == 401) {
+        handleAuthError(context);
+      }
+      ResponseHolder rh = ResponseHolder(error: "", ok: true, data: data);
+      return rh;
+    } catch (e) {
+      print(e);
+      ResponseHolder gr =
+          ResponseHolder(error: "error from client end", ok: false, data: null);
       return gr;
     }
   }
