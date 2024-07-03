@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:divide_frontend/services/ReceiptService.dart';
+import 'package:divide_frontend/services/common/Scanner.dart';
 import 'package:divide_frontend/ui/common/dialog.dart';
 import 'package:divide_frontend/ui/pages/NewReceiptPage.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ class ScanReceiptPage extends StatefulWidget {
   String? receiptReturnedId;
   bool hasFinishedProcessing = false;
 
-  ScanReceiptPage({super.key, required this.base64Img, this.receiptReturnedId});
+  ScanReceiptPage({super.key, required this.base64Img});
 
   @override
   State<StatefulWidget> createState() => _ScanReceiptPageState();
@@ -20,61 +21,61 @@ class ScanReceiptPage extends StatefulWidget {
 
 class _ScanReceiptPageState extends State<ScanReceiptPage> {
   late ReceiptService receiptService;
+  late Scanner scanner;
 
   @override
   void initState() {
     receiptService = ReceiptService(context: context);
     if (widget.base64Img != "") {
       print(widget.base64Img);
-      receiptService.sendDataToScan(widget.base64Img).then((value) => {
-            if (value.ok)
-              {
-                setState(() {
-                  widget.receiptReturnedId = value.data["processingAuthCode"];
-                }),
-                Timer.periodic(Duration(seconds: 1), (Timer t) {
-                  receiptService
-                      .checkProgress(widget.receiptReturnedId!)
-                      .then((v) => {
-                            if (v.ok)
-                              {
-                                print(v.data["ready"]),
-                                if (v.data["ready"] as bool == true)
-                                  {
-                                    setState(() =>
-                                        {widget.hasFinishedProcessing = true}),
-                                    t.cancel(),
-                                    Timer(const Duration(seconds: 3), () {
-                                      Navigator.pop(context);
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const NewReceiptPage()),
-                                      );
-                                    })
-                                  }
-                              }
-                            else
-                              {
-                                t.cancel(),
-                                setState(() =>
-                                    {widget.hasFinishedProcessing = false}),
-                                showCustomDialog(
-                                    title: "Something went wrong",
-                                    content:
-                                        "It looks like that we are having a problem analyzing your request.",
-                                    context: context,
-                                    buttonText: "Ok",
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    })
-                              }
-                          });
-                })
-              }
-          });
+      scanner = Scanner(base64Img: widget.base64Img, service: receiptService);
+      startScanning();
     }
+  }
+
+  void startScanning() async {
+    Navigator.pop(context);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => NewReceiptPage(
+                id: "lI5Hk",
+              )),
+    );
+    /*try {
+      await scanner.sendDataToScan();
+      scanner.keepCheckProgress();
+      Timer.periodic(Duration(seconds: 1), (Timer t) {
+        setState(() {
+          widget.hasFinishedProcessing = scanner.hasFinishedProcessing;
+          widget.receiptReturnedId = scanner.receiptReturnedId;
+        });
+        if (scanner.hasFinishedProcessing) {
+          t.cancel();
+          Timer(const Duration(seconds: 3), () {
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => NewReceiptPage(
+                        id: scanner.receiptReturnedId!,
+                      )),
+            );
+          });
+        }
+      });
+    } catch (e) {
+      // ignore: use_build_context_synchronously
+      showCustomDialog(
+          title: "Something went wrong",
+          content:
+              "It looks like that we are having a problem analyzing your request.",
+          context: context,
+          buttonText: "Ok",
+          onPressed: () {
+            Navigator.pop(context);
+          });
+    }*/
   }
 
   @override
