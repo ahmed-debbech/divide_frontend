@@ -1,3 +1,4 @@
+import 'package:divide_frontend/ui/common/SingleItem.dart';
 import 'package:flutter/material.dart';
 
 class NewReceiptPage extends StatefulWidget {
@@ -15,14 +16,25 @@ class _NewReceiptPageState extends State<NewReceiptPage> {
     print("${widget.id}");
   }
 
+  List<Widget> loadItems() {
+    Widget w = SingleItem(name: "yiqehwgfdcuyghqwuyfed", quantity: 4, total: 10.0,);
+    List<Widget> list = [];
+    list.add(w);
+    list.add(w);
+    list.add(w);
+    list.add(w);
+    list.add(w);
+    return list;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
         body: SingleChildScrollView(
             child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(children: [
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Align(
@@ -41,9 +53,42 @@ class _NewReceiptPageState extends State<NewReceiptPage> {
                       Icon(Icons.cancel_rounded)
                     ],
                   ),
-                  Image(
-                    image: NetworkImage('https://example.com/image.jpg'),
-                  )
+                  SizedBox(height: 16),
+                  Container(
+                    height: 200,
+                    color: Colors.grey[300],
+                    child: Center(child: Text('Picture')),
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    'Place',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    'Total',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 20),
+                  SingleChildScrollView(
+                    child: Column(
+                      children: loadItems(),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // Handle validate action
+                      },
+                      child: Text('Validate'),
+                      style: ElevatedButton.styleFrom(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      ),
+                    ),
+                  ),
                 ]))));
   }
 }
