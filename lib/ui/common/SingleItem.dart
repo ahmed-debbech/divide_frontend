@@ -4,7 +4,6 @@ class SingleItem extends StatefulWidget {
   String name;
   double total;
   double quantity = 0;
-  double left = 0;
   int involvedPeople = 0;
 
   SingleItem(
@@ -21,36 +20,43 @@ class _SingleItemState extends State<SingleItem> {
   @override
   Widget build(BuildContext context) {
     return Card(
+        elevation: 4.0,
         child: Padding(
             padding: EdgeInsets.all(5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
+                Container(
+                  width: 100,
+                  child: Text(
                     softWrap: true,
-
-                    "${widget.quantity}X ${widget.name}",
+                    overflow: TextOverflow.visible,
+                    "${widget.name}",
                     style: TextStyle(
                         fontSize: 14,
                         color: Colors.black,
                         fontWeight: FontWeight.bold),
                   ),
-               
-                const SizedBox(width: 30.0),
+                ),
+                Spacer(),
                 Expanded(
                     child: Column(children: [
                   Text(
-                    "total",
-                    style: TextStyle(color: Color.fromRGBO(8, 192, 82, 1)),
+                    widget.total.toString(),
+                    style: TextStyle(
+                        color: Color.fromRGBO(8, 192, 82, 1), fontSize: 12.0),
                   ),
-                  Text("left",
-                      style: TextStyle(color: Color.fromRGBO(225, 38, 38, 1))),
+                  Text("${widget.quantity.toString()}X",
+                      style: TextStyle(
+                          color: Color.fromRGBO(225, 38, 38, 1),
+                          fontSize: 12.0)),
                 ])),
-                const Spacer(flex: 1),
+                const SizedBox(width: 8.0),
                 Expanded(
-                    child: Text("inv",
+                    child: Text("2 people",
                         style: TextStyle(
                             color: Color.fromRGBO(132, 132, 132, 1)))),
+                const SizedBox(width: 8.0),
                 IconButton(
                   icon: Icon(Icons.link),
                   onPressed: () {},

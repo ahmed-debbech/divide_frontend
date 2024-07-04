@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:divide_frontend/models/GeneralResponse.dart';
+import 'package:divide_frontend/models/Receipt.dart';
 import 'package:divide_frontend/models/ResponseHolder.dart';
 import 'package:divide_frontend/models/UserWithFriendship.dart';
 import 'package:divide_frontend/services/common/HandleAuthError.dart';
@@ -63,6 +64,34 @@ class ReceiptService {
       }
       ResponseHolder rh = ResponseHolder(error: "", ok: true, data: data);
       return rh;
+    } catch (e) {
+      print(e);
+      ResponseHolder gr =
+          ResponseHolder(error: "error from client end", ok: false, data: null);
+      return gr;
+    }
+  }
+
+  Future<ResponseHolder> getOne(String receipt) async {
+    try {
+      final response = await http.get(
+          Uri.parse(globals.top_level_api + 'receipt/get/${receipt}'),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ${await shared.getAccessToken()}',
+          });
+      var data = jsonDecode(response.body);
+      if (response.statusCode == 403 || response.statusCode == 401) {
+        handleAuthError(context);
+      }
+      if (response.statusCode != 200) {
+        return ResponseHolder(error: data["error"], ok: false, data: null);
+      }
+      //if (response.statusCode == 200) {
+      ReceiptDto receiptDto = ReceiptDto.fromJson(data);
+      return ResponseHolder(error: "", ok: true, data: receiptDto);
+      //}
     } catch (e) {
       print(e);
       ResponseHolder gr =

@@ -7,6 +7,7 @@ import 'package:divide_frontend/ui/pages/MyProfilePage.dart';
 import 'package:divide_frontend/ui/pages/MyReceiptsPage.dart';
 import 'package:divide_frontend/ui/pages/MyFriendsPage.dart';
 import 'package:divide_frontend/ui/common/ButtomNavigationButton.dart';
+import 'package:divide_frontend/ui/pages/NewReceiptPage.dart';
 import 'package:divide_frontend/ui/pages/ScanReceiptPage.dart';
 import 'package:flutter/material.dart';
 
@@ -35,14 +36,22 @@ class _ShellState extends State<Shell> {
   }
 
   void _onDoubleClick() {
-    TakePhoto().capture().then((value) => {
+    Navigator.pop(context);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => NewReceiptPage(
+                id: "STZL9",
+              )),
+    );
+    /*TakePhoto().capture().then((value) => {
           //contains the base64 image
           Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => ScanReceiptPage(base64Img: value)),
           )
-        });
+        });*/
   }
 
   void _handleClick() {

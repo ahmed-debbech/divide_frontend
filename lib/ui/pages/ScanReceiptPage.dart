@@ -34,15 +34,7 @@ class _ScanReceiptPageState extends State<ScanReceiptPage> {
   }
 
   void startScanning() async {
-    Navigator.pop(context);
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => NewReceiptPage(
-                id: "lI5Hk",
-              )),
-    );
-    /*try {
+    try {
       await scanner.sendDataToScan();
       scanner.keepCheckProgress();
       Timer.periodic(Duration(seconds: 1), (Timer t) {
@@ -75,7 +67,7 @@ class _ScanReceiptPageState extends State<ScanReceiptPage> {
           onPressed: () {
             Navigator.pop(context);
           });
-    }*/
+    }
   }
 
   @override
