@@ -47,6 +47,7 @@ class ReceiptData {
   final int id;
   final String? referenceNumber;
   final String? imgTumbUrl;
+  final String? thumbnailBytes;
   final String? deliveryDate;
   final double? discount;
   final double? subtotal;
@@ -58,6 +59,7 @@ class ReceiptData {
     required this.id,
     required this.referenceNumber,
     required this.imgTumbUrl,
+    required this.thumbnailBytes,
     required this.deliveryDate,
     required this.discount,
     required this.subtotal,
@@ -71,6 +73,7 @@ class ReceiptData {
       id: json['id'] as int,
       referenceNumber: json['referenceNumber'] as String?,
       imgTumbUrl: json['imgTumbUrl'] as String?,
+      thumbnailBytes: json['thumbnailBytes'] as String?,
       deliveryDate: json['deliveryDate'] as String?,
       discount: (json['discount'] as double?),
       subtotal: (json['subtotal'] as double?),

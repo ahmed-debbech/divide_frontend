@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:divide_frontend/models/Receipt.dart';
 import 'package:divide_frontend/services/ReceiptService.dart';
 import 'package:divide_frontend/ui/common/SingleItem.dart';
@@ -104,7 +106,11 @@ class _NewReceiptPageState extends State<NewReceiptPage> {
                   Container(
                     height: 200,
                     color: Colors.grey[300],
-                    child: Center(child: Text('Picture')),
+                    child: Center(
+                        child: (receiptDto?.receiptData?.thumbnailBytes != null)
+                            ? Image.memory(base64Decode(
+                                receiptDto!.receiptData?.thumbnailBytes ?? ""))
+                            : Text("Missing Image")),
                   ),
                   SizedBox(height: 20),
                   Text(

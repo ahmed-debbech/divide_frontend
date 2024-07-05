@@ -36,12 +36,11 @@ class _ShellState extends State<Shell> {
   }
 
   void _onDoubleClick() {
-    Navigator.pop(context);
     Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => NewReceiptPage(
-                id: "STZL9",
+                id: "qygk0",
               )),
     );
     /*TakePhoto().capture().then((value) => {
