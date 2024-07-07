@@ -8,14 +8,19 @@ class Scanner {
   String? receiptReturnedId;
   bool hasFinishedProcessing = false;
   ReceiptService service;
+  bool detached = false;
+  Timer? currentTimerChecker;
 
   Scanner({required this.base64Img, required this.service}) {
     hasFinishedProcessing = false;
     receiptReturnedId = null;
+    detached = false;
   }
 
   Future<void> sendDataToScan() async {
     ResponseHolder resp = await service.sendDataToScan(this.base64Img);
+    if(detached) return;
+
     if (resp.ok) {
       this.receiptReturnedId = resp.data["processingAuthCode"];
     } else {
@@ -24,8 +29,8 @@ class Scanner {
   }
 
   Future<void> keepCheckProgress() async {
-    Timer.periodic(Duration(seconds: 1), (Timer t) {
-      service.checkProgress(receiptReturnedId!).then((v) => {
+    currentTimerChecker = Timer.periodic(Duration(seconds: 1), (Timer t) {
+      service.checkProgress(receiptReturnedId!).then((v) => {            
             if (v.ok)
               {
                 print(v.data["ready"]),
@@ -43,5 +48,11 @@ class Scanner {
               }
           });
     });
+  }
+
+  void detach() {
+    this.detached = true;
+    
+    currentTimerChecker?.cancel();
   }
 }

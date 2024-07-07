@@ -53,7 +53,7 @@ class _SingleItemState extends State<SingleItem> {
                 ])),
                 const SizedBox(width: 8.0),
                 Expanded(
-                    child: Text("2 people",
+                    child: Text("0 people",
                         style: TextStyle(
                             color: Color.fromRGBO(132, 132, 132, 1)))),
                 const SizedBox(width: 8.0),

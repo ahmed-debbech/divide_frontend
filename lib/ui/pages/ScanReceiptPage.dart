@@ -22,9 +22,11 @@ class ScanReceiptPage extends StatefulWidget {
 class _ScanReceiptPageState extends State<ScanReceiptPage> {
   late ReceiptService receiptService;
   late Scanner scanner;
+  Timer? currentWaitingTimer;
 
   @override
   void initState() {
+    super.initState();
     receiptService = ReceiptService(context: context);
     if (widget.base64Img != "") {
       print(widget.base64Img);
@@ -33,11 +35,18 @@ class _ScanReceiptPageState extends State<ScanReceiptPage> {
     }
   }
 
+  @override
+  void dispose(){
+    scanner.detach();
+    currentWaitingTimer?.cancel();
+    super.dispose();
+  }
+
   void startScanning() async {
     try {
       await scanner.sendDataToScan();
       scanner.keepCheckProgress();
-      Timer.periodic(Duration(seconds: 1), (Timer t) {
+      currentWaitingTimer = Timer.periodic(Duration(seconds: 1), (Timer t) {
         setState(() {
           widget.hasFinishedProcessing = scanner.hasFinishedProcessing;
           widget.receiptReturnedId = scanner.receiptReturnedId;

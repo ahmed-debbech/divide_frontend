@@ -1,11 +1,14 @@
 import 'dart:convert';
 
+import 'package:divide_frontend/models/FriendshipRegistry.dart';
 import 'package:divide_frontend/models/Receipt.dart';
+import 'package:divide_frontend/services/FriendshipService.dart';
 import 'package:divide_frontend/services/ReceiptService.dart';
 import 'package:divide_frontend/ui/common/SingleItem.dart';
 import 'package:divide_frontend/ui/common/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:divide_frontend/globals.dart' as globals;
+import 'package:intl/intl.dart';
 
 class NewReceiptPage extends StatefulWidget {
   late String id;
@@ -18,11 +21,16 @@ class NewReceiptPage extends StatefulWidget {
 
 class _NewReceiptPageState extends State<NewReceiptPage> {
   late ReceiptService receiptService;
+  late FriendshipService friendshipService;
+  List<FriendshipRegistry> friends = [];
+
   ReceiptDto? receiptDto = null;
 
   @override
   void initState() {
+    super.initState();
     receiptService = ReceiptService(context: context);
+    friendshipService = FriendshipService(context: context);
     receiptService.getOne(widget.id).then((value) => {
           if (value.ok)
             {
@@ -43,8 +51,17 @@ class _NewReceiptPageState extends State<NewReceiptPage> {
             }
         });
     print("${widget.id}");
+
+    friendshipService.getFriends().then((value) => {
+      this.friends = value
+    });
   }
 
+  @override
+  void dispose(){
+    super.dispose();
+  }
+  
   List<Widget> loadItems(ReceiptData? receiptData) {
     if (receiptData == null) return [];
     if (receiptData.lineItems == null) return [];
@@ -68,10 +85,10 @@ class _NewReceiptPageState extends State<NewReceiptPage> {
             child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(children: [
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Align(
+                      const Align(
                         alignment: Alignment.topLeft,
                         child: Padding(
                           padding: EdgeInsets.only(top: 16.0),
@@ -84,7 +101,12 @@ class _NewReceiptPageState extends State<NewReceiptPage> {
                           ),
                         ),
                       ),
-                      Icon(Icons.cancel_rounded)
+                      IconButton(
+                        icon: Icon(Icons.cancel_rounded), onPressed: () {
+                          
+                          Navigator.pop(context);
+                        },
+                      )
                     ],
                   ),
                   (receiptDto?.isProcessing == "FAILED" &&
@@ -102,7 +124,10 @@ class _NewReceiptPageState extends State<NewReceiptPage> {
                           width: 0,
                         ),
                   SizedBox(height: 16),
-                  Text("Created at: ${receiptDto?.createdAt ?? "..."}"),
+                  (receiptDto?.createdAt == null)
+                      ? Text("")
+                      : Text(
+                          "Created at: ${DateFormat.yMMMEd().format(receiptDto?.createdAt ?? DateTime.now())} at ${DateFormat.jms().format(receiptDto?.createdAt ?? DateTime.now())}"),
                   Container(
                     height: 200,
                     color: Colors.grey[300],
@@ -123,13 +148,11 @@ class _NewReceiptPageState extends State<NewReceiptPage> {
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 20),
-                  SingleChildScrollView(
-                    child: Column(
-                      children: (receiptDto?.receiptData != null &&
-                              receiptDto?.failureReason == null)
-                          ? loadItems(receiptDto?.receiptData)
-                          : [Text("No items available.")],
-                    ),
+                  Column(
+                    children: (receiptDto?.receiptData != null &&
+                            receiptDto?.failureReason == null)
+                        ? loadItems(receiptDto?.receiptData)
+                        : [Text("No items available.")],
                   ),
                   SizedBox(height: 20),
                   Align(
