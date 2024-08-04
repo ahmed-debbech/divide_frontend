@@ -46,7 +46,7 @@ class _SingleItemState extends State<SingleItem> {
                     style: TextStyle(
                         color: Color.fromRGBO(8, 192, 82, 1), fontSize: 12.0),
                   ),
-                  Text("${widget.quantity.toString()}X",
+                  Text("X${widget.quantity.toString()}",
                       style: TextStyle(
                           color: Color.fromRGBO(225, 38, 38, 1),
                           fontSize: 12.0)),

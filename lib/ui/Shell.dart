@@ -36,21 +36,21 @@ class _ShellState extends State<Shell> {
   }
 
   void _onDoubleClick() {
-    Navigator.push(
+    /*Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => NewReceiptPage(
-                id: "qygk0",
+                id: "r7ZVs",
               )),
-    );
-    /*TakePhoto().capture().then((value) => {
+    );*/
+    TakePhoto().capture().then((value) => {
           //contains the base64 image
           Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => ScanReceiptPage(base64Img: value)),
           )
-        });*/
+        });
   }
 
   void _handleClick() {
