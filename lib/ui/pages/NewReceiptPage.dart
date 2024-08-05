@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:divide_frontend/models/FriendshipRegistry.dart';
 import 'package:divide_frontend/models/Receipt.dart';
+import 'package:divide_frontend/models/ResponseHolder.dart';
 import 'package:divide_frontend/services/FriendshipService.dart';
 import 'package:divide_frontend/services/ReceiptService.dart';
 import 'package:divide_frontend/ui/common/SingleItem.dart';
@@ -26,12 +27,39 @@ class _NewReceiptPageState extends State<NewReceiptPage> {
 
   ReceiptDto? receiptDto = null;
 
+  Future<ResponseHolder?> tryGetOne(int numberOfTimes) async {
+    ResponseHolder k;
+    do {
+      k = await receiptService.getOne(widget.id);
+      numberOfTimes--;
+    } while ((numberOfTimes != 0) && (!k.ok));
+
+    if (numberOfTimes <= 0) return null;
+
+    if (k.ok) {
+      return k;
+    } else {
+      return null;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     receiptService = ReceiptService(context: context);
     friendshipService = FriendshipService(context: context);
-    receiptService.getOne(widget.id).then((value) => {
+    tryGetOne(2).then((value) => {
+          if (value == null)
+            {
+              showCustomDialog(
+                  context: context,
+                  title: "Something went wrong",
+                  content: value!.error,
+                  buttonText: "Ok",
+                  onPressed: () {
+                    Navigator.pop(context);
+                  })
+            },
           if (value.ok)
             {
               globals.logger.i((value.data as ReceiptDto).toString()),
@@ -52,16 +80,14 @@ class _NewReceiptPageState extends State<NewReceiptPage> {
         });
     print("${widget.id}");
 
-    friendshipService.getFriends().then((value) => {
-      this.friends = value
-    });
+    friendshipService.getFriends().then((value) => {this.friends = value});
   }
 
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
   }
-  
+
   List<Widget> loadItems(ReceiptData? receiptData) {
     if (receiptData == null) return [];
     if (receiptData.lineItems == null) return [];
@@ -102,8 +128,8 @@ class _NewReceiptPageState extends State<NewReceiptPage> {
                         ),
                       ),
                       IconButton(
-                        icon: Icon(Icons.cancel_rounded), onPressed: () {
-                          
+                        icon: Icon(Icons.cancel_rounded),
+                        onPressed: () {
                           Navigator.pop(context);
                         },
                       )
