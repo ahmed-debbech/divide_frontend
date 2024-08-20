@@ -2,6 +2,7 @@ import 'package:divide_frontend/shared_pref/SharedPrefDb.dart';
 import 'package:divide_frontend/ui/Login.dart';
 import 'package:divide_frontend/ui/pages/MyReceiptsPage.dart';
 import 'package:divide_frontend/ui/Shell.dart';
+import 'package:divide_frontend/ui/pages/NewReceiptPage.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -57,7 +58,7 @@ class _MyAppState extends State<MyApp> {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: isLoggedIn! ? Shell() : LoginPage(),
+        home: isLoggedIn! ? Shell() : NewReceiptPage(id: "d"),//LoginPage(),
       );
     }
   }
