@@ -46,6 +46,7 @@ class _NewReceiptPageState extends State<NewReceiptPage> {
   @override
   void initState() {
     super.initState();
+
     ReceiptItem ri = ReceiptItem(id: 0, description: 'description', discount: 0, total: 130, fullDescription: "", text: 'text', quantity: 1, weight: 0, tax: 1);
     List<ReceiptItem> line = [];
     line.add(ri);
@@ -96,7 +97,7 @@ class _NewReceiptPageState extends State<NewReceiptPage> {
   void dispose() {
     super.dispose();
   }
-
+  
   List<Widget> loadItems(ReceiptData? receiptData) {
     if (receiptData == null) return [];
     if (receiptData.lineItems == null) return [];

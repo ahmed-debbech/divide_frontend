@@ -1,3 +1,4 @@
+import 'package:divide_frontend/ui/common/DivisionPopup.dart';
 import 'package:flutter/material.dart';
 
 class SingleItem extends StatefulWidget {
@@ -17,6 +18,13 @@ class SingleItem extends StatefulWidget {
 }
 
 class _SingleItemState extends State<SingleItem> {
+  void openDivisionPopup() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => CafeLatinoLattePopup(people: [new Person(amount: 500, name: "jj")], addPerson: (a){}, removePerson: (a){},)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -59,7 +67,7 @@ class _SingleItemState extends State<SingleItem> {
                 const SizedBox(width: 8.0),
                 IconButton(
                   icon: Icon(Icons.link),
-                  onPressed: () {},
+                  onPressed: () {openDivisionPopup();},
                 ),
               ],
             )));
