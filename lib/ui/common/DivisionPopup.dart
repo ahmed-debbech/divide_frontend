@@ -10,15 +10,7 @@ class Person {
 }
 
 class CafeLatinoLattePopup extends StatelessWidget {
-  final List<Person> people;
-  final Function(String) addPerson;
-  final Function(Person) removePerson;
-
-  CafeLatinoLattePopup({
-    required this.people,
-    required this.addPerson,
-    required this.removePerson,
-  });
+  final List<Person> people = [];
 
   @override
   Widget build(BuildContext context) {

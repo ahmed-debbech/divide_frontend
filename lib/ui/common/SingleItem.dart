@@ -6,12 +6,14 @@ class SingleItem extends StatefulWidget {
   double total;
   double quantity = 0;
   int involvedPeople = 0;
+  int receiptItemId = 0;
 
   SingleItem(
       {super.key,
       required this.name,
       required this.quantity,
-      required this.total});
+      required this.total,
+      required this.receiptItemId});
 
   @override
   State<SingleItem> createState() => _SingleItemState();
@@ -21,7 +23,7 @@ class _SingleItemState extends State<SingleItem> {
   void openDivisionPopup() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => CafeLatinoLattePopup(people: [new Person(amount: 500, name: "jj")], addPerson: (a){}, removePerson: (a){},)),
+      MaterialPageRoute(builder: (context) => CafeLatinoLattePopup()),
     );
   }
 

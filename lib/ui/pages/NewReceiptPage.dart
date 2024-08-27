@@ -108,6 +108,7 @@ class _NewReceiptPageState extends State<NewReceiptPage> {
         name: receiptData.lineItems![i].text ?? "",
         quantity: receiptData.lineItems![i].quantity ?? 0.0,
         total: receiptData.lineItems![i].total ?? 0.0,
+        receiptItemId: receiptData.lineItems![i].id,
       );
       list.add(w);
     }

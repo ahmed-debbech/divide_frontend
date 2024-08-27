@@ -51,6 +51,7 @@ class _MyAppState extends State<MyApp> {
         ),
       );
     } else {
+      isLoggedIn = false;
       return MaterialApp(
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
