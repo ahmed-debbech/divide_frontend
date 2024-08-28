@@ -5,6 +5,8 @@ import 'package:divide_frontend/models/Receipt.dart';
 import 'package:divide_frontend/models/ResponseHolder.dart';
 import 'package:divide_frontend/services/FriendshipService.dart';
 import 'package:divide_frontend/services/ReceiptService.dart';
+import 'package:divide_frontend/services/division/DivisionManager.dart';
+import 'package:divide_frontend/services/division/DivisionRepresenter.dart';
 import 'package:divide_frontend/ui/common/SingleItem.dart';
 import 'package:divide_frontend/ui/common/dialog.dart';
 import 'package:flutter/material.dart';
@@ -47,12 +49,51 @@ class _NewReceiptPageState extends State<NewReceiptPage> {
   void initState() {
     super.initState();
 
-    ReceiptItem ri = ReceiptItem(id: 0, description: 'description', discount: 0, total: 130, fullDescription: "", text: 'text', quantity: 1, weight: 0, tax: 1);
+    ReceiptItem ri = ReceiptItem(
+        id: 1,
+        description: 'description',
+        discount: 0,
+        total: 130,
+        fullDescription: "",
+        text: 'text',
+        quantity: 1,
+        weight: 0,
+        tax: 1);
+    ReceiptItem ri1 = ReceiptItem(
+        id: 2,
+        description: 'description',
+        discount: 0,
+        total: 130,
+        fullDescription: "",
+        text: 'text',
+        quantity: 1,
+        weight: 0,
+        tax: 1);
     List<ReceiptItem> line = [];
     line.add(ri);
-    ReceiptData rd = ReceiptData(id: 0, referenceNumber: 'referenceNumber', imgTumbUrl: 'imgTumbUrl', thumbnailBytes: 'iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAIAAADTED8xAAADMElEQVR4nOzVwQnAIBQFQYXff81RUkQCOyDj1YOPnbXWPmeTRef+/3O/OyBjzh3CD95BfqICMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMO0TAAD//2Anhf4QtqobAAAAAElFTkSuQmCC', deliveryDate: 'deliveryDate', discount: 0, subtotal: 130, total: 130, vendorName: 'vendorName', lineItems: line);
-    ReceiptDto? rc = ReceiptDto(id: 0, ourReference: '0', isProcessing: 'false', failureReason: null, createdAt: DateTime.now(), initiator: 'ddd', receiptData: rd);
+    line.add(ri1);
+    ReceiptData rd = ReceiptData(
+        id: 1,
+        referenceNumber: 'referenceNumber',
+        imgTumbUrl: 'imgTumbUrl',
+        thumbnailBytes:
+            'iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAIAAADTED8xAAADMElEQVR4nOzVwQnAIBQFQYXff81RUkQCOyDj1YOPnbXWPmeTRef+/3O/OyBjzh3CD95BfqICMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMO0TAAD//2Anhf4QtqobAAAAAElFTkSuQmCC',
+        deliveryDate: 'deliveryDate',
+        discount: 0,
+        subtotal: 130,
+        total: 130,
+        vendorName: 'vendorName',
+        lineItems: line);
+    ReceiptDto? rc = ReceiptDto(
+        id: 1,
+        ourReference: '0',
+        isProcessing: 'false',
+        failureReason: null,
+        createdAt: DateTime.now(),
+        initiator: 'ddd',
+        receiptData: rd);
     setState(() => receiptDto = rc);
+    DivisionManager().createRepresenter(rc);
     globals.logger.i((receiptDto).toString());
 
     return;
@@ -97,7 +138,7 @@ class _NewReceiptPageState extends State<NewReceiptPage> {
   void dispose() {
     super.dispose();
   }
-  
+
   List<Widget> loadItems(ReceiptData? receiptData) {
     if (receiptData == null) return [];
     if (receiptData.lineItems == null) return [];

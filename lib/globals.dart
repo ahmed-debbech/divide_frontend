@@ -4,8 +4,6 @@ import 'package:logger/logger.dart';
 String top_level_api = "http://192.168.1.4:5100/api/";
 //String top_level_api = "http://57.129.15.180:5100/api/";
 
-DivisionRepresenter divisionRepresenter = DivisionRepresenter();
-
 var logger = Logger(
   printer: PrettyPrinter(
     methodCount: 0, // number of method calls to be displayed

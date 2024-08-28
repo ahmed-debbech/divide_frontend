@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-
-
 class Person {
   final String name;
   final int amount;
@@ -21,7 +19,7 @@ class CafeLatinoLattePopup extends StatelessWidget {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Align(
+          const Align(
             alignment: Alignment.topLeft,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,7 +57,7 @@ class CafeLatinoLattePopup extends StatelessWidget {
                 children: people.map((person) {
                   return PersonTile(
                     person: person,
-                    removePerson: removePerson,
+                    removePerson: (e) {},
                   );
                 }).toList(),
               ),
@@ -75,7 +73,7 @@ class CafeLatinoLattePopup extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (context) =>
-                        AddNonExistingUserPopup(addPerson: addPerson),
+                        AddNonExistingUserPopup(addPerson: (e) {}),
                   );
                 },
               ),

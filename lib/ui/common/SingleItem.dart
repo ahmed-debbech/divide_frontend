@@ -1,5 +1,9 @@
+import 'dart:async';
+
+import 'package:divide_frontend/services/division/DivisionManager.dart';
 import 'package:divide_frontend/ui/common/DivisionPopup.dart';
 import 'package:flutter/material.dart';
+import 'package:divide_frontend/globals.dart' as globals;
 
 class SingleItem extends StatefulWidget {
   String name;
@@ -25,6 +29,15 @@ class _SingleItemState extends State<SingleItem> {
       context,
       MaterialPageRoute(builder: (context) => CafeLatinoLattePopup()),
     );
+  }
+
+  @override
+  void initState() {
+    Timer(const Duration(seconds: 3), () {
+      setState(() => widget.involvedPeople = DivisionManager()
+          .divisionRepresenter!
+          .getInvolvedPplForSingleItem(widget.receiptItemId));
+    });
   }
 
   @override
@@ -63,13 +76,15 @@ class _SingleItemState extends State<SingleItem> {
                 ])),
                 const SizedBox(width: 8.0),
                 Expanded(
-                    child: Text("0 people",
+                    child: Text("${widget.involvedPeople} people",
                         style: TextStyle(
                             color: Color.fromRGBO(132, 132, 132, 1)))),
                 const SizedBox(width: 8.0),
                 IconButton(
                   icon: Icon(Icons.link),
-                  onPressed: () {openDivisionPopup();},
+                  onPressed: () {
+                    openDivisionPopup();
+                  },
                 ),
               ],
             )));

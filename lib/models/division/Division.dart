@@ -6,7 +6,11 @@ class Division {
   String? lastModTs;
   List<DivItem>? divisionItems;
 
-  Division(){
+  Division() {
     divisionItems = [];
+  }
+  @override
+  String toString() {
+    return 'Division(id: $id, submissionTs: $submissionTs, lastModTs: $lastModTs, divisionItems: $divisionItems)';
   }
 }

@@ -1,3 +1,4 @@
+import 'package:divide_frontend/services/division/DivisionManager.dart';
 import 'package:divide_frontend/shared_pref/SharedPrefDb.dart';
 import 'package:divide_frontend/ui/Login.dart';
 import 'package:divide_frontend/ui/pages/MyReceiptsPage.dart';
@@ -22,6 +23,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     checkLoginStatus();
+    DivisionManager();
   }
 
   Future<void> checkLoginStatus() async {
@@ -59,7 +61,7 @@ class _MyAppState extends State<MyApp> {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: isLoggedIn! ? Shell() : NewReceiptPage(id: "d"),//LoginPage(),
+        home: isLoggedIn! ? Shell() : NewReceiptPage(id: "d"), //LoginPage(),
       );
     }
   }
