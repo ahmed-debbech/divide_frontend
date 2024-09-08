@@ -1,3 +1,5 @@
+import 'package:divide_frontend/models/division/Participant.dart';
+import 'package:divide_frontend/services/division/DivisionManager.dart';
 import 'package:divide_frontend/ui/common/division_popups/AddFriendPopup.dart';
 import 'package:divide_frontend/ui/common/division_popups/AddNonExistingUserPopup.dart';
 import 'package:divide_frontend/ui/common/division_popups/Person.dart';
@@ -5,18 +7,29 @@ import 'package:divide_frontend/ui/common/division_popups/PersonTile.dart';
 import 'package:flutter/material.dart';
 
 class EntryPopup extends StatelessWidget {
-  final List<Person> people = [];
+  List<Person> people = [];
   String name;
   double quantity;
   double unitPrice;
   double totalPrice;
+  int receiptId;
 
   EntryPopup({
     required this.name,
     required this.totalPrice,
     required this.quantity,
-    required this.unitPrice
+    required this.unitPrice,
+    required this.receiptId
   });
+
+
+  @override
+  void initState(){
+    List<Participant> parts = DivisionManager().divisionRepresenter!.getAllParticipantsFor(receiptId);
+    for(Participant p in parts){
+      people.add(Person(name: p.nonExistingUserName!, amount: 0));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +94,7 @@ class EntryPopup extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (context) =>
-                        AddNonExistingUserPopup(addPerson: (e) {}),
+                        AddNonExistingUserPopup(divId: receiptId),
                   );
                 },
               ),

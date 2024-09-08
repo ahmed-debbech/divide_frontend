@@ -27,7 +27,14 @@ class _SingleItemState extends State<SingleItem> {
   void openDivisionPopup() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => EntryPopup(name: widget.name, totalPrice: widget.total, quantity: widget.quantity, unitPrice: 0,)),
+      MaterialPageRoute(
+          builder: (context) => EntryPopup(
+                name: widget.name,
+                totalPrice: widget.total,
+                quantity: widget.quantity,
+                unitPrice: 0,
+                receiptId: widget.receiptItemId,
+              )),
     );
   }
 

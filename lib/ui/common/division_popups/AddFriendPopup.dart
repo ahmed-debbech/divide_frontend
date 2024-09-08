@@ -56,7 +56,6 @@ class AddFriendPopup extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 16),
           ],
         ),
       ),

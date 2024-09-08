@@ -2,9 +2,11 @@ import 'package:divide_frontend/services/division/DivisionManager.dart';
 import 'package:flutter/material.dart';
 
 class AddNonExistingUserPopup extends StatefulWidget {
-  final Function(String) addPerson;
 
-  AddNonExistingUserPopup({required this.addPerson});
+  int divId;
+
+
+  AddNonExistingUserPopup({required this.divId});
 
   @override
   _AddNonExistingUserPopupState createState() =>
@@ -22,6 +24,7 @@ class _AddNonExistingUserPopupState extends State<AddNonExistingUserPopup> {
           DivisionManager().divisionRepresenter!.getListOfAllNonExistingUsers();
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +68,8 @@ class _AddNonExistingUserPopupState extends State<AddNonExistingUserPopup> {
         ),
         TextButton(
           onPressed: () {
-            widget.addPerson(newName);
+            //widget.addPerson(newName);
+            DivisionManager().divisionRepresenter!.setNewNonExistingUser(widget.divId, newName);
             Navigator.pop(context);
           },
           child: Text('Add'),

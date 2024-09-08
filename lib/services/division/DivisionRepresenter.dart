@@ -44,7 +44,6 @@ class DivisionRepresenter {
     List<String> nonexisting = [];
     for(int i =0; i<=division.divisionItems!.length-1; i++){
       DivItem di = this.division.divisionItems![i];
-      this.division.divisionItems![i].participantsList!.add(Participant(id: 0, registeredUser: null, nonExistingUserName: "eeee", amount: 1));
 
       for(int j=0; j<=di.participantsList!.length-1; j++){
         if(di.participantsList![j].nonExistingUserName != null){
@@ -54,6 +53,28 @@ class DivisionRepresenter {
     }
 
     return nonexisting;
+  }
+
+  void setNewNonExistingUser(int divId, String newUser){
+    List<DivItem> di = division.divisionItems!;
+    for(int i = 0; i<=division.divisionItems!.length-1; i++){
+      if(division.divisionItems![i].receiptItem!.id == divId){
+        division.divisionItems![i].participantsList!.add(Participant(id: null, registeredUser: null,
+         nonExistingUserName: newUser, amount: 0));
+        break;
+      }
+    }
+        globals.logger.i((this.division).toString());
+
+  }
+
+  List<Participant> getAllParticipantsFor(int receiptId) {
+    for(DivItem di in division.divisionItems!){
+      if(di.receiptItem!.id == receiptId){
+        return di.participantsList!;
+      }
+    }
+    return [];
   }
 
 }
