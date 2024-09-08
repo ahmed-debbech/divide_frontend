@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:divide_frontend/services/division/DivisionManager.dart';
-import 'package:divide_frontend/ui/common/DivisionPopup.dart';
+import 'package:divide_frontend/ui/common/division_popups/EntryPopup.dart';
 import 'package:flutter/material.dart';
 import 'package:divide_frontend/globals.dart' as globals;
 
@@ -27,7 +27,7 @@ class _SingleItemState extends State<SingleItem> {
   void openDivisionPopup() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => CafeLatinoLattePopup()),
+      MaterialPageRoute(builder: (context) => EntryPopup(name: widget.name, totalPrice: widget.total, quantity: widget.quantity, unitPrice: 0,)),
     );
   }
 

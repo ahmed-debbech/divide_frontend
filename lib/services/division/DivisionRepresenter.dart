@@ -39,4 +39,21 @@ class DivisionRepresenter {
     }
     return 0;
   }
+
+  List<String> getListOfAllNonExistingUsers(){
+    List<String> nonexisting = [];
+    for(int i =0; i<=division.divisionItems!.length-1; i++){
+      DivItem di = this.division.divisionItems![i];
+      this.division.divisionItems![i].participantsList!.add(Participant(id: 0, registeredUser: null, nonExistingUserName: "eeee", amount: 1));
+
+      for(int j=0; j<=di.participantsList!.length-1; j++){
+        if(di.participantsList![j].nonExistingUserName != null){
+          nonexisting.add(di.participantsList![j].nonExistingUserName!);
+        }
+      }
+    }
+
+    return nonexisting;
+  }
+
 }
