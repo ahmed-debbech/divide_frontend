@@ -1,6 +1,6 @@
 class Person {
   final String name;
-  final int amount;
+  final double amount;
 
   Person({required this.name, required this.amount});
 }

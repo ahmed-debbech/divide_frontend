@@ -16,6 +16,7 @@ class AddNonExistingUserPopup extends StatefulWidget {
 class _AddNonExistingUserPopupState extends State<AddNonExistingUserPopup> {
   String newName = '';
   List<String> listOfNonExisting = [];
+  final TextEditingController control = TextEditingController();
 
   @override
   void initState() {
@@ -44,7 +45,7 @@ class _AddNonExistingUserPopupState extends State<AddNonExistingUserPopup> {
               height: 150, // Adjust height as needed
               child: SingleChildScrollView(
                 child: Column(
-                  children: buildList()))),
+                  children: buildList(context, widget.divId)))),
           SizedBox(height: 16),
           Align(
             alignment: Alignment.centerLeft,
@@ -53,11 +54,7 @@ class _AddNonExistingUserPopupState extends State<AddNonExistingUserPopup> {
           SizedBox(height: 8),
           TextField(
             decoration: InputDecoration(hintText: 'Name'),
-            onChanged: (value) {
-              setState(() {
-                newName = value;
-              });
-            },
+            controller: control
           ),
         ],
       ),
@@ -68,9 +65,11 @@ class _AddNonExistingUserPopupState extends State<AddNonExistingUserPopup> {
         ),
         TextButton(
           onPressed: () {
-            //widget.addPerson(newName);
-            DivisionManager().divisionRepresenter!.setNewNonExistingUser(widget.divId, newName);
-            Navigator.pop(context);
+            setState(() {
+              listOfNonExisting.add(control.text);
+              newName = control.text;
+              control.text = "";
+            });
           },
           child: Text('Add'),
         ),
@@ -78,9 +77,9 @@ class _AddNonExistingUserPopupState extends State<AddNonExistingUserPopup> {
     );
   }
 
-  List<Widget> buildList() {
+  List<Widget> buildList(BuildContext context, int divId) {
     List<Widget> wid = [];
-    for (int i = 0; i <= listOfNonExisting.length - 1; i++)
+    for (int i = 0; i <= listOfNonExisting.length - 1; i++) {
       wid.add(Container(
         decoration: BoxDecoration(
           border: Border.all(color: Colors.grey),
@@ -92,8 +91,13 @@ class _AddNonExistingUserPopupState extends State<AddNonExistingUserPopup> {
             child: Text(listOfNonExisting[i][0]),
           ),
           title: Text(listOfNonExisting[i]),
+          onTap: (){
+            DivisionManager().divisionRepresenter!.addNonExistingUser(divId, listOfNonExisting[i]);
+            Navigator.pop(context);
+          },
         ),
       ));
+    }
     return wid;
   }
 }

@@ -3,7 +3,8 @@ class Participant {
   User? registeredUser;
   String? nonExistingUserName;
   double? amount;
-
+  double weight = 1;
+  
   Participant(
       {this.id, this.registeredUser, this.nonExistingUserName, this.amount});
   @override
@@ -14,7 +15,7 @@ class Participant {
     String nonExistingUserNameString = nonExistingUserName ?? 'null';
     String amountString = amount?.toString() ?? 'null';
 
-    return 'Participant(id: $id, registeredUser: $registeredUserString, nonExistingUserName: $nonExistingUserNameString, amount: $amountString)';
+    return 'Participant(id: $id, registeredUser: $registeredUserString, nonExistingUserName: $nonExistingUserNameString, amount: $amountString, weight: $weight)';
   }
 }
 

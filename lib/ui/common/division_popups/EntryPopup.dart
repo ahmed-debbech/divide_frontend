@@ -5,9 +5,9 @@ import 'package:divide_frontend/ui/common/division_popups/AddNonExistingUserPopu
 import 'package:divide_frontend/ui/common/division_popups/Person.dart';
 import 'package:divide_frontend/ui/common/division_popups/PersonTile.dart';
 import 'package:flutter/material.dart';
+import 'package:divide_frontend/globals.dart' as globals;
 
-class EntryPopup extends StatelessWidget {
-  List<Person> people = [];
+class EntryPopup extends StatefulWidget {
   String name;
   double quantity;
   double unitPrice;
@@ -22,12 +22,18 @@ class EntryPopup extends StatelessWidget {
     required this.receiptId
   });
 
+  @override
+  State<EntryPopup> createState() => _EntryPopupState();
+}
+
+class _EntryPopupState extends State<EntryPopup> {
+  List<Person> people = [];
 
   @override
   void initState(){
-    List<Participant> parts = DivisionManager().divisionRepresenter!.getAllParticipantsFor(receiptId);
+    List<Participant> parts = DivisionManager().divisionRepresenter!.getAllParticipantsFor(widget.receiptId);
     for(Participant p in parts){
-      people.add(Person(name: p.nonExistingUserName!, amount: 0));
+      people.add(Person(name: p.nonExistingUserName!, amount: p.amount!));
     }
   }
 
@@ -35,7 +41,7 @@ class EntryPopup extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Center(
-        child: Text(this.name),
+        child: Text(this.widget.name),
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -50,19 +56,19 @@ class EntryPopup extends StatelessWidget {
                     text: 'Total Amount: ',
                     children: [
                       TextSpan(
-                        text: '${this.totalPrice}',
+                        text: '${this.widget.totalPrice}',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
                 ),
-                Text('Quantity: ${this.quantity}'),
+                Text('Quantity: ${this.widget.quantity}'),
               ],
             ),
           ),
           Align(
             alignment: Alignment.topRight,
-            child: Text('Unit price: ${this.unitPrice}'),
+            child: Text('Unit price: ${this.widget.unitPrice}'),
           ),
           SizedBox(height: 25),
           Text('${people.length} people involved'),
@@ -94,7 +100,7 @@ class EntryPopup extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (context) =>
-                        AddNonExistingUserPopup(divId: receiptId),
+                        AddNonExistingUserPopup(divId: widget.receiptId),
                   );
                 },
               ),
